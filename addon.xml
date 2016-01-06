@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="script.service.kastodi" name="Kastodi" version="0.1.1" provider-name="kharts">
+    <requires>
+        <import addon="xbmc.python" version="2.1.0"></import>
+        <import addon="script.module.requests" version="2.9.1"></import>
+        <import addon="script.module.protobuf" version="2.5.0"></import>
+    </requires>
+    <extension point="xbmc.service" library="service.py" start="startup" />
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en">Cast from Kodi to Chromecast!</summary>
+        <description lang="en">Allows to cast media from Kodi to Chromecast</description>
+        <disclaimer lang="en"></disclaimer>
+        <language></language>
+        <platform>all</platform>
+        <license>GNU GPL v2</license>
+        <forum></forum>
+        <website>https://github.com/kharts/kastodi</website>
+        <email></email>
+        <source>https://github.com/kharts/kastodi</source>
+    </extension>
+</addon>
