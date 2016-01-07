@@ -46,10 +46,11 @@ class CustomPlayer(xbmc.Player):
                                             height=100,
                                             label="Cast")
         #player_window = xbmcgui.Window(PLAYER_CONTROLS_ID)
-        player_window = xbmcgui.Window()
+        player_window = xbmcgui.WindowDialog()
         player_window.addControl(test_button)
-        player_window.show()
+        player_window.doModal()
         test_button.setVisible(True)
+        #xbmc.executebuiltin("ActivateWindow(" + PLAYER_CONTROLS_ID + ")")
 
 
 if __name__ == "__main__":
