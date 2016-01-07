@@ -2,10 +2,12 @@
 
 
 import xbmc
+import xbmcgui
 from common import *
 
 
-idle_time = 1 # 1 second
+IDLE_TIME = 1 # 1 second
+PLAYER_CONTROLS_ID = 10114 # player controls window ID
 
 
 def run():
@@ -19,7 +21,7 @@ def run():
     monitor = xbmc.Monitor()
 
     while not monitor.abortRequested():
-        if monitor.waitForAbort(idle_time):
+        if monitor.waitForAbort(IDLE_TIME):
             # Abort was requested while waiting. We should exit
             break
 
@@ -33,7 +35,14 @@ class CustomPlayer(xbmc.Player):
         :return: None
         """
 
-        debug("onPlayBackStarted")
+        test_button = xbmcgui.ControlButton(x=50,
+                                            y=50,
+                                            width=100,
+                                            height=100,
+                                            label="Cast")
+        player_window = xbmcgui.Window(PLAYER_CONTROLS_ID)
+        player_window.addControl(test_button)
+        player_window.show()
 
 
 if __name__ == "__main__":
