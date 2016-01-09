@@ -57,7 +57,7 @@ class CustomPlayer(xbmc.Player):
         player_window = xbmcgui.Window(WINDOW_OSD)
         #player_window = xbmcgui.WindowDialog()
         player_window.addControl(test_button)
-        player_window.doModal()
+        #player_window.doModal()
         test_button.setVisible(True)
         #xbmc.executebuiltin("ActivateWindow(" + PLAYER_CONTROLS_ID + ")")
 
