@@ -39,7 +39,16 @@ class CustomPlayer(xbmc.Player):
         :return: None
         """
 
-        info("onPlayBackStarted")
+        #info("onPlayBackStarted")
+        self.add_cast_button()
+
+
+    def add_cast_button(self):
+        """
+        Add Cast button to player
+        :return: None
+        """
+
         test_button = xbmcgui.ControlButton(x=50,
                                             y=50,
                                             width=100,
