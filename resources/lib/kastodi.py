@@ -75,6 +75,19 @@ class PlayerWindow(xbmcgui.Window):
             self.addControl(self.cast_button)
             self.cast_button.setVisible(True)
 
+    def onClick(self, controlId):
+        """
+        "onControl" event handler
+        :param controlId: id of the source of the event
+        :type control: xbmcgui.Control
+        :return: None
+        """
+
+        info("Some control is pressed")
+        if hasattr(self, "cast_button"):
+            if controlId == self.cast_button.getId():
+                info("Cast button is pressed")
+
 
 if __name__ == "__main__":
     run()
