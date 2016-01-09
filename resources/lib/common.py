@@ -7,6 +7,7 @@
 
 import xbmc
 import xbmcaddon
+import os
 
 
 this_addon = xbmcaddon.Addon()
@@ -86,4 +87,19 @@ def log(msg, level=xbmc.LOGNOTICE):
 
     log_message = u'{0}: {1}'.format(addonID, msg)
     xbmc.log(log_message.encode("utf-8"), level)
+
+def image(filename):
+    """
+    Construct full filename of the image, using short name
+    and path to addon folder
+    :param filename: short filename of the image
+    :return: full filename of the image
+    :rtype: str
+    """
+
+    addon_folder = this_addon.getAddonInfo("path")
+    return os.path.join(addon_folder,
+                        "resources",
+                        "img",
+                        filename)
 
