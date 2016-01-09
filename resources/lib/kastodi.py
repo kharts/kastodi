@@ -57,9 +57,18 @@ class CustomPlayer(xbmc.Player):
                                             focusTexture=image("ic_cast_blue_24dp.png"),
                                             noFocusTexture=image("ic_cast_white_24dp.png"))
 
-        player_window = xbmcgui.Window(WINDOW_OSD)
+        #player_window = xbmcgui.Window(WINDOW_OSD)
+        player_window = PlayerWindow(WINDOW_OSD)
         player_window.addControl(cast_button)
         cast_button.setVisible(True)
+
+
+class PlayerWindow(xbmcgui.Window):
+    """
+    Class for accessing Video OSD window
+    """
+
+    pass
 
 
 if __name__ == "__main__":
