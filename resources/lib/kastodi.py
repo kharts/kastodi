@@ -56,17 +56,10 @@ class CustomPlayer(xbmc.Player):
                                             label="",
                                             focusTexture=image("ic_cast_blue_24dp.png"),
                                             noFocusTexture=image("ic_cast_white_24dp.png"))
-        # cast_button = xbmcgui.ControlImage(x=50,
-        #                                    y=50,
-        #                                    width=72,
-        #                                    height=72,
-        #                                    filename=image("ic_cast_white24dp.png"))
+
         player_window = xbmcgui.Window(WINDOW_OSD)
-        #player_window = xbmcgui.WindowDialog()
         player_window.addControl(cast_button)
-        #player_window.doModal()
         cast_button.setVisible(True)
-        #xbmc.executebuiltin("ActivateWindow(" + PLAYER_CONTROLS_ID + ")")
 
 
 if __name__ == "__main__":
