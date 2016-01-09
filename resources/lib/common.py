@@ -97,7 +97,7 @@ def image(filename):
     :rtype: str
     """
 
-    addon_folder = this_addon.getAddonInfo("path")
+    addon_folder = xbmc.translatePath(this_addon.getAddonInfo("path"))
     return os.path.join(addon_folder,
                         "resources",
                         "img",
