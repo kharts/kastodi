@@ -49,14 +49,13 @@ class CustomPlayer(xbmc.Player):
         :return: None
         """
 
-        icon = image("ic_cast_white_24dp.png")
         cast_button = xbmcgui.ControlButton(x=50,
                                             y=50,
-                                            width=100,
-                                            height=100,
+                                            width=72,
+                                            height=72,
                                             label="",
-                                            focusTexture=icon,
-                                            noFocusTexture=icon)
+                                            focusTexture=image("ic_cast_blue_24dp.png"),
+                                            noFocusTexture=image("ic_cast_white_24dp.png"))
         # cast_button = xbmcgui.ControlImage(x=50,
         #                                    y=50,
         #                                    width=72,
