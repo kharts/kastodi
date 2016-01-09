@@ -12,7 +12,7 @@ from common import *
 
 IDLE_TIME = 1 # 1 second
 PLAYER_CONTROLS_ID = 10114 # player controls window ID
-
+WINDOW_OSD = 12901 # video on screen display window ID
 
 def run():
     """
@@ -45,8 +45,8 @@ class CustomPlayer(xbmc.Player):
                                             width=100,
                                             height=100,
                                             label="Cast")
-        #player_window = xbmcgui.Window(PLAYER_CONTROLS_ID)
-        player_window = xbmcgui.WindowDialog()
+        player_window = xbmcgui.Window(WINDOW_OSD)
+        #player_window = xbmcgui.WindowDialog()
         player_window.addControl(test_button)
         player_window.doModal()
         test_button.setVisible(True)
