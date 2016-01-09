@@ -49,26 +49,31 @@ class CustomPlayer(xbmc.Player):
         :return: None
         """
 
-        cast_button = xbmcgui.ControlButton(x=50,
-                                            y=50,
-                                            width=72,
-                                            height=72,
-                                            label="",
-                                            focusTexture=image("ic_cast_blue_24dp.png"),
-                                            noFocusTexture=image("ic_cast_white_24dp.png"))
-
-        #player_window = xbmcgui.Window(WINDOW_OSD)
         player_window = PlayerWindow(WINDOW_OSD)
-        player_window.addControl(cast_button)
-        cast_button.setVisible(True)
-
+        player_window.add_cast_button()
 
 class PlayerWindow(xbmcgui.Window):
     """
     Class for accessing Video OSD window
     """
 
-    pass
+    def add_cast_button(self):
+        """
+        Add Cast button to Video OSD window
+        :return: None
+        """
+
+        if not hasattr(self, "cast_button"):
+            self.cast_button = xbmcgui.ControlButton(
+                x=50,
+                y=50,
+                width=72,
+                height=72,
+                label="",
+                focusTexture=image("ic_cast_blue_24dp.png"),
+                noFocusTexture=image("ic_cast_white_24dp.png"))
+            self.addControl(self.cast_button)
+            self.cast_button.setVisible(True)
 
 
 if __name__ == "__main__":
