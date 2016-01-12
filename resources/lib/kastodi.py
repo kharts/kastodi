@@ -77,15 +77,30 @@ class PlayerWindow(xbmcgui.Window):
 
     def onClick(self, controlId):
         """
-        "onControl" event handler
+        "onClick" event handler
         :param controlId: id of the source of the event
         :type control: xbmcgui.Control
         :return: None
         """
 
-        info("Some control is pressed")
+        debug("onClick")
+        info("Click")
         if hasattr(self, "cast_button"):
             if controlId == self.cast_button.getId():
+                info("Click on cast_button")
+
+    def onControl(self, control):
+        """
+        onControl event handler
+        :param control: source of the event
+        :type control: xbmcgui.Control
+        :return: None
+        """
+
+        debug("onControl")
+        info("Some control is pressed")
+        if hasattr(self, "cast_button"):
+            if control == self.cast_button:
                 info("Cast button is pressed")
 
 
