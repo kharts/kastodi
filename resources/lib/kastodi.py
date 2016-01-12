@@ -103,6 +103,16 @@ class PlayerWindow(xbmcgui.Window):
             if control == self.cast_button:
                 info("Cast button is pressed")
 
+    def onAction(self, Action):
+        """
+        onAction event handler
+        :param Action: xbmcgui.Action
+        :return: None
+        """
+
+        debug("onAction")
+        info("Action")
+
 
 if __name__ == "__main__":
     run()
