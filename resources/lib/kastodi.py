@@ -39,7 +39,6 @@ class CustomPlayer(xbmc.Player):
         :return: None
         """
 
-        #info("onPlayBackStarted")
         self.add_cast_button()
 
     def add_cast_button(self):
@@ -52,9 +51,10 @@ class CustomPlayer(xbmc.Player):
         player_window = PlayerWindow()
         player_window.add_cast_button()
         player_window.doModal()
+        #player_window.show()
+        #player_window.cast_button.setVisible(False)
 
-
-class PlayerWindow(xbmcgui.Window):
+class PlayerWindow(xbmcgui.WindowDialog):
     """
     Class for accessing Video OSD window
     """
@@ -76,6 +76,8 @@ class PlayerWindow(xbmcgui.Window):
                 noFocusTexture=image("ic_cast_white_24dp.png"))
             self.addControl(self.cast_button)
             self.cast_button.setVisible(True)
+            # condition = "Window.IsVisible(" + str(WINDOW_OSD) + ")"
+            # self.cast_button.setVisibleCondition(condition)
 
     def onClick(self, controlId):
         """
@@ -85,7 +87,6 @@ class PlayerWindow(xbmcgui.Window):
         :return: None
         """
 
-        debug("onClick")
         info("Click")
         if hasattr(self, "cast_button"):
             if controlId == self.cast_button.getId():
@@ -105,16 +106,29 @@ class PlayerWindow(xbmcgui.Window):
             if control == self.cast_button:
                 info("Cast button is pressed")
 
-    def onAction(self, Action):
+    # def onAction(self, Action):
+    #     """
+    #     onAction event handler
+    #     :param Action: xbmcgui.Action
+    #     :return: None
+    #     """
+    #
+    #     debug("onAction")
+    #     if Action == xbmcgui.ACTION_MOUSE_MOVE:
+    #         debug("ACTION_MOUSE_MOVE")
+    #         self.check_cast_button_visibility()
+
+    def check_cast_button_visibility(self):
         """
-        onAction event handler
-        :param Action: xbmcgui.Action
+        Check if Cast button visibility need to be changed
         :return: None
         """
 
-        debug("onAction")
-        info("Action")
-
+        if hasattr(self, "cast_button"):
+            condition = "Window.IsVisible(" + str(WINDOW_OSD) + ")"
+            IsVisible = xbmc.getCondVisibility(condition)
+            debug("IsVisible: " + str(IsVisible))
+            self.cast_button.setVisible(IsVisible)
 
 if __name__ == "__main__":
     run()
