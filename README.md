@@ -6,4 +6,5 @@ Stay tuned!
 Except as otherwise noted, the source code is distributed according to the terms of the GNU General Public License version 2 or any later version.  
 [pychromecast](https://github.com/balloob/pychromecast) is available under the MIT License.  
 [zeroconf](https://github.com/jstasiak/python-zeroconf) is available under the GNU Lesser General Public License version 2.1.  
+[protobuf](https://pypi.python.org/pypi/protobuf) is available under the New BSD License.  
 Cast icons are licensed under the Creative Commons Attribution 3.0 License.  
