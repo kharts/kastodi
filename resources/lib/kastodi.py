@@ -232,30 +232,6 @@ class PlayerWindow(xbmcgui.WindowDialog):
         player = xbmc.Player()
         return player.getPlayingFile()
 
-    # def onAction(self, Action):
-    #     """
-    #     onAction event handler
-    #     :param Action: xbmcgui.Action
-    #     :return: None
-    #     """
-    #
-    #     debug("onAction")
-    #     if Action == xbmcgui.ACTION_MOUSE_MOVE:
-    #         debug("ACTION_MOUSE_MOVE")
-    #         self.check_cast_button_visibility()
-
-    def check_cast_button_visibility(self):
-        """
-        Check if Cast button visibility need to be changed
-        :return: None
-        """
-
-        if hasattr(self, "cast_button"):
-            condition = "Window.IsVisible(" + str(WINDOW_OSD) + ")"
-            IsVisible = xbmc.getCondVisibility(condition)
-            debug("IsVisible: " + str(IsVisible))
-            self.cast_button.setVisible(IsVisible)
-
 
 def get_content_type(url):
     """
