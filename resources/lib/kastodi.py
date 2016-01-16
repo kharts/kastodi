@@ -40,6 +40,9 @@ def run():
     monitor = xbmc.Monitor()
 
     while not monitor.abortRequested():
+        player.check_cast_button_visibility()
+        #thread = threading.Thread(target=player.check_cast_button_visibility)
+        #thread.start()
         if monitor.waitForAbort(IDLE_TIME):
             # Abort was requested while waiting. We should exit
             break
@@ -47,6 +50,10 @@ def run():
 
 class CustomPlayer(xbmc.Player):
     """ Class for catching Player events"""
+
+    def __init__(self):
+        super(CustomPlayer, self).__init__()
+        self.player_window = PlayerWindow()
 
     def onPlayBackStarted(self):
         """
@@ -63,16 +70,39 @@ class CustomPlayer(xbmc.Player):
         """
 
         #player_window = PlayerWindow(WINDOW_OSD)
-        player_window = PlayerWindow()
-        player_window.add_cast_button()
-        player_window.doModal()
+        #self.player_window = PlayerWindow()
+        self.player_window.add_cast_button()
+        #player_window.doModal()
         #player_window.show()
         #player_window.cast_button.setVisible(False)
 
+    def check_cast_button_visibility(self):
+        """
+        Check if Cast button visibility needs to be changed
+        :return: None
+        """
+
+        condition = "Window.IsVisible(" + str(WINDOW_OSD) + ")"
+        video_osd_visible = xbmc.getCondVisibility(condition)
+        debug("video_osd_visible: " + str(video_osd_visible))
+        debug("player_window.visible: " + str(self.player_window.visible))
+        if video_osd_visible:
+            if not self.player_window.visible:
+                self.player_window.show_window()
+        else:
+            if self.player_window.visible:
+                self.player_window.hide_window()
+
+
 class PlayerWindow(xbmcgui.WindowDialog):
     """
-    Class for accessing Video OSD window
+    Class for extending Player Window by placing Cast button
     """
+    
+    def __init__(self):
+        super(PlayerWindow, self).__init__()
+        self.visible = False
+        self.cast_button = None
 
     def add_cast_button(self):
         """
@@ -80,7 +110,7 @@ class PlayerWindow(xbmcgui.WindowDialog):
         :return: None
         """
 
-        if not hasattr(self, "cast_button"):
+        if not self.cast_button:
             self.cast_button = xbmcgui.ControlButton(
                 x=50,
                 y=50,
@@ -94,6 +124,30 @@ class PlayerWindow(xbmcgui.WindowDialog):
             # condition = "Window.IsVisible(" + str(WINDOW_OSD) + ")"
             # self.cast_button.setVisibleCondition(condition)
 
+    def show_window(self):
+        """
+        Show dialog window
+        :return: None
+        """
+
+        debug("show_window")
+        #self.cast_button.setVisible(True)
+        #self.doModal()
+        self.show()
+        self.visible = True
+        debug("visible = True")
+
+    def hide_window(self):
+        """
+        Hide dialog window
+        :return: None
+        """
+
+        debug("hide_window")
+        #self.cast_button.setVisible(False)
+        self.close()
+        self.visible = False
+
     def onClick(self, controlId):
         """
         "onClick" event handler
@@ -104,7 +158,7 @@ class PlayerWindow(xbmcgui.WindowDialog):
 
         #info("Click")
         debug("onClick")
-        if hasattr(self, "cast_button"):
+        if self.cast_button:
             if controlId == self.cast_button.getId():
                 #info("Click on cast_button")
                 #self.cast_button_pressed()
@@ -120,10 +174,9 @@ class PlayerWindow(xbmcgui.WindowDialog):
 
         debug("onControl")
         #info("Some control is pressed")
-        if hasattr(self, "cast_button"):
-            if control == self.cast_button:
-                #info("Cast button is pressed")
-                self.cast_button_pressed()
+        if control == self.cast_button:
+            #info("Cast button is pressed")
+            self.cast_button_pressed()
 
     def cast_button_pressed(self):
         """
@@ -132,7 +185,7 @@ class PlayerWindow(xbmcgui.WindowDialog):
         """
 
         progress_dialog = xbmcgui.DialogProgress()
-        progress_dialog.create("Connecting to cast devices...")
+        progress_dialog.create("Discovering cast devices...")
         chromecasts = pychromecast.get_chromecasts_as_dict().keys()
         progress_dialog.close()
         if not chromecasts:
