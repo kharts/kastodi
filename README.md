@@ -6,7 +6,7 @@ Stay tuned!
 Install
 -------
 Requrements:  
-- [netifaces](https://pypi.python.org/pypi/netifaces)  
+[netifaces](https://pypi.python.org/pypi/netifaces)  
 On Windows, after installation, copy netifaces.pyd from  
 C:\Python27\Lib\site-packages  
 to Kodi libs folder:  
