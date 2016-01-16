@@ -5,7 +5,7 @@ Addon is still under active development and there is no public releases yet.
 Stay tuned!  
 Install
 -------
-Requrements:  
+Requirements:  
 [netifaces](https://pypi.python.org/pypi/netifaces)  
 On Windows, after installation, copy netifaces.pyd from  
 C:\Python27\Lib\site-packages  
