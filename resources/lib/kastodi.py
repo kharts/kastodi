@@ -5,14 +5,27 @@
 # This software may be used and distributed according to the terms of the
 # GNU General Public License version 2 or any later version.
 
+
+import sys
+import os
 import xbmc
 import xbmcgui
 from common import *
 
 
+# add resources/lib folder to path variable
+# (for importing pychromecast and zeroconf)
+addon_path = xbmc.translatePath(this_addon.getAddonInfo("path"))
+lib_path = os.path.join(addon_path, "resources", "lib")
+sys.path.insert(0, lib_path)
+debug(sys.path)
+import pychromecast
+debug("pychromecast is imported successfully")
+
 IDLE_TIME = 1 # 1 second
 PLAYER_CONTROLS_ID = 10114 # player controls window ID
 WINDOW_OSD = 12901 # video on screen display window ID
+
 
 def run():
     """
