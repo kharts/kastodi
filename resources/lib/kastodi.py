@@ -8,6 +8,8 @@
 
 import sys
 import os
+import mimetypes
+import urllib
 import xbmc
 import xbmcgui
 from common import *
@@ -139,7 +141,43 @@ class PlayerWindow(xbmcgui.WindowDialog):
         select_chromecast_dialog = xbmcgui.Dialog()
         index = select_chromecast_dialog.select("Select cast device:",
                                                 chromecasts)
-        info(chromecasts[index] + " is selected.")
+        cast_name = chromecasts[index]
+        progress_dialog.create("Connecting to " + cast_name + "...")
+        self.start_casting(cast_name)
+        progress_dialog.close()
+
+    def start_casting(self, chromecast_name):
+        """
+        Start casting to the Chromecast with the given friendly name
+        :param chromecast_name: friendly name of selected Chromecast
+        :type chromecast_name: str
+        :return: None
+        """
+
+        cast = pychromecast.get_chromecast(friendly_name=chromecast_name)
+        if not cast:
+            error("Couldn't connect to " + chromecast_name)
+            return
+        cast.wait()
+        url = self.get_playing_url()
+        debug("url: " + url)
+        content_type, encoding = mimetypes.guess_type(url)
+        if not content_type:
+            content_type = get_content_type(url)
+        debug("content_type: " + str(content_type))
+        xbmc.Player().pause()
+        cast.media_controller.play_media(url,
+                                         content_type)
+
+    def get_playing_url(self):
+        """
+        Get URL of currently playing media
+        :return: url of the media
+        :rtype: str
+        """
+
+        player = xbmc.Player()
+        return player.getPlayingFile()
 
     # def onAction(self, Action):
     #     """
@@ -164,6 +202,24 @@ class PlayerWindow(xbmcgui.WindowDialog):
             IsVisible = xbmc.getCondVisibility(condition)
             debug("IsVisible: " + str(IsVisible))
             self.cast_button.setVisible(IsVisible)
+
+
+def get_content_type(url):
+    """
+    Get content type of the resource given by url
+    :param url: address of the resource
+    :type: str
+    :return: content-type in the form "type/subtype"
+    :rtype: str
+    """
+
+    try:
+        response = urllib.urlopen(url)
+    except Exception, e:
+        log_exception(str(e))
+        return None
+    return response.info().type
+
 
 if __name__ == "__main__":
     run()
