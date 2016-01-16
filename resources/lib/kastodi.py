@@ -100,10 +100,13 @@ class PlayerWindow(xbmcgui.WindowDialog):
         :return: None
         """
 
-        info("Click")
+        #info("Click")
+        debug("onClick")
         if hasattr(self, "cast_button"):
             if controlId == self.cast_button.getId():
-                info("Click on cast_button")
+                #info("Click on cast_button")
+                #self.cast_button_pressed()
+                pass
 
     def onControl(self, control):
         """
@@ -114,10 +117,29 @@ class PlayerWindow(xbmcgui.WindowDialog):
         """
 
         debug("onControl")
-        info("Some control is pressed")
+        #info("Some control is pressed")
         if hasattr(self, "cast_button"):
             if control == self.cast_button:
-                info("Cast button is pressed")
+                #info("Cast button is pressed")
+                self.cast_button_pressed()
+
+    def cast_button_pressed(self):
+        """
+        Handle click on Cast button
+        :return: None
+        """
+
+        progress_dialog = xbmcgui.DialogProgress()
+        progress_dialog.create("Connecting to cast devices...")
+        chromecasts = pychromecast.get_chromecasts_as_dict().keys()
+        progress_dialog.close()
+        if not chromecasts:
+            info("No cast devices connected")
+            return
+        select_chromecast_dialog = xbmcgui.Dialog()
+        index = select_chromecast_dialog.select("Select cast device:",
+                                                chromecasts)
+        info(chromecasts[index] + " is selected.")
 
     # def onAction(self, Action):
     #     """
