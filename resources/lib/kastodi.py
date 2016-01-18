@@ -187,12 +187,15 @@ class PlayerWindow(xbmcgui.WindowDialog):
         progress_dialog = xbmcgui.DialogProgress()
         progress_dialog.create("Discovering cast devices...")
         chromecasts = pychromecast.get_chromecasts_as_dict().keys()
+        if progress_dialog.iscanceled():
+            progress_dialog.close()
+            return
         progress_dialog.close()
         if not chromecasts:
             info("No cast devices connected")
             return
         select_chromecast_dialog = xbmcgui.Dialog()
-        index = select_chromecast_dialog.select("Select cast device:",
+        index = select_chromecast_dialog.select("Cast to",
                                                 chromecasts)
         cast_name = chromecasts[index]
         progress_dialog.create("Connecting to " + cast_name + "...")
