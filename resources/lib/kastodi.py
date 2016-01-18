@@ -221,7 +221,8 @@ class PlayerWindow(xbmcgui.WindowDialog):
         if not content_type:
             content_type = get_content_type(url)
         debug("content_type: " + str(content_type))
-        xbmc.Player().pause()
+        if not xbmc.getCondVisibility("Player.Paused()"):
+            xbmc.Player().pause()
         cast.media_controller.play_media(url,
                                          content_type)
 
