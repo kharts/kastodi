@@ -31,7 +31,15 @@ PLAYER_CONTROLS_ID = 10114 # player controls window ID
 WINDOW_OSD = 12901 # video on screen display window ID
 NEED_RESTART = False
 
-def start():
+def start_casting():
+    """
+    Start casting
+    :return: None
+    """
+
+    xbmcgui.Dialog().notification("Hi!","Hi!")
+
+def start_service():
     """
     Start service
     :return: None

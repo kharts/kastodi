@@ -2,4 +2,4 @@
 
 from resources.lib import kastodi
 
-kastodi.start()
+kastodi.start_service()
