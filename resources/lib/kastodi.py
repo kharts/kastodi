@@ -148,6 +148,7 @@ def add_cast_button():
     with open(videoosdxml_path, "rb") as videoosdxml:
         old_text = videoosdxml.read()
     if old_text.find("<!-- kastodi_start -->") >= 0:
+        NEED_RESTART = False
         return True
     cast_button_text = get_cast_button_text()
     new_text = old_text.replace("</controls>", cast_button_text + "</controls>")
