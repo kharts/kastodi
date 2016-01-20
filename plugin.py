@@ -2,4 +2,4 @@
 
 from resources.lib import kastodi
 
-kastodi.start_casting()
+kastodi.cast_button_pressed()

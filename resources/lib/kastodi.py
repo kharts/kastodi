@@ -33,7 +33,7 @@ WINDOW_OSD = 12901 # video on screen display window ID
 NEED_RESTART = False
 
 
-def start_casting():
+def cast_button_pressed():
     """
     Start casting
     :return: None
