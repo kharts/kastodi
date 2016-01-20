@@ -1,0 +1,12 @@
+<!-- kastodi_start -->
+<control type="button">
+	<description>Cast button</description>
+	<left>50</left>
+	<top>50</top>
+	<width>72</width>
+	<height>72</height>
+	<onclick>Notification(Hi,Hi)</onclick>
+	<texturefocus>ic_cast_blue_24dp.png</texturefocus>
+	<texturenofocus>ic_cast_white_24dp.png</texturenofocus>
+</control>
+<!-- kastodi_end -->
