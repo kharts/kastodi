@@ -26,10 +26,12 @@ sys.path.insert(0, lib_path)
 debug(sys.path)
 import pychromecast
 
+
 IDLE_TIME = 1 # 1 second
 PLAYER_CONTROLS_ID = 10114 # player controls window ID
 WINDOW_OSD = 12901 # video on screen display window ID
 NEED_RESTART = False
+
 
 def start_casting():
     """

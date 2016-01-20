@@ -5,7 +5,7 @@
 	<top>50</top>
 	<width>72</width>
 	<height>72</height>
-	<onclick>Notification(Hi,Hi)</onclick>
+	<onclick>RunPlugin(plugin://script.service.kastodi)</onclick>
 	<texturefocus>ic_cast_blue_24dp.png</texturefocus>
 	<texturenofocus>ic_cast_white_24dp.png</texturenofocus>
 </control>
