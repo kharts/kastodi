@@ -16,6 +16,7 @@ import xbmc
 import xbmcgui
 import xbmcaddon
 from common import *
+from cast_controls import CastControlsDialog
 
 
 # add resources/lib folder to path variable
@@ -82,7 +83,8 @@ def start_casting(chromecast_name):
         player.pause()
     cast.media_controller.play_media(url,
                                      content_type)
-
+    cast_controls_dialog = CastControlsDialog("Cast Controls Dialog")
+    cast_controls_dialog.doModal()
 
 def start_service():
     """
