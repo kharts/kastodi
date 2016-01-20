@@ -58,7 +58,7 @@ def cast_button_pressed():
     progress_dialog.close()
 
 
-def start_casting(self, chromecast_name):
+def start_casting(chromecast_name):
     """
     Start casting to the Chromecast with the given friendly name
     :param chromecast_name: friendly name of selected Chromecast
