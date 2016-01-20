@@ -35,11 +35,27 @@ NEED_RESTART = False
 
 def cast_button_pressed():
     """
-    Start casting
+    Function is called when user is pressing Cast button
     :return: None
     """
 
-    xbmcgui.Dialog().notification("Hi!","Hi!")
+    progress_dialog = xbmcgui.DialogProgress()
+    progress_dialog.create("Discovering cast devices...")
+    chromecasts = pychromecast.get_chromecasts_as_dict().keys()
+    if progress_dialog.iscanceled():
+        progress_dialog.close()
+        return
+    progress_dialog.close()
+    if not chromecasts:
+        info("No cast devices connected")
+        return
+    select_chromecast_dialog = xbmcgui.Dialog()
+    index = select_chromecast_dialog.select("Cast to",
+                                            chromecasts)
+    cast_name = chromecasts[index]
+    progress_dialog.create("Connecting to " + cast_name + "...")
+    start_casting(cast_name)
+    progress_dialog.close()
 
 
 def start_casting(self, chromecast_name):
