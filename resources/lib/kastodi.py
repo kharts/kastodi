@@ -41,6 +41,33 @@ def cast_button_pressed():
 
     xbmcgui.Dialog().notification("Hi!","Hi!")
 
+
+def start_casting(self, chromecast_name):
+    """
+    Start casting to the Chromecast with the given friendly name
+    :param chromecast_name: friendly name of selected Chromecast
+    :type chromecast_name: str
+    :return: None
+    """
+
+    cast = pychromecast.get_chromecast(friendly_name=chromecast_name)
+    if not cast:
+        error("Couldn't connect to " + chromecast_name)
+        return
+    cast.wait()
+    player = xbmc.Player()
+    url = player.getPlayingFile()
+    debug("url: " + url)
+    content_type, encoding = mimetypes.guess_type(url)
+    if not content_type:
+        content_type = get_content_type(url)
+    debug("content_type: " + str(content_type))
+    if not xbmc.getCondVisibility("Player.Paused()"):
+        player.pause()
+    cast.media_controller.play_media(url,
+                                     content_type)
+
+
 def start_service():
     """
     Start service
