@@ -63,7 +63,8 @@ def start_casting(chromecast_name):
     :return: None
     """
 
-    progress_dialog.create("Connecting to " + cast_name + "...")
+    progress_dialog = xbmcgui.DialogProgress()
+    progress_dialog.create("Connecting to " + chromecast_name + "...")
     cast = pychromecast.get_chromecast(friendly_name=chromecast_name)
     if not cast:
         error("Couldn't connect to " + chromecast_name)

@@ -7,6 +7,7 @@
 
 
 import pyxbmct
+from common import *
 
 
 class CastControlsDialog(pyxbmct.AddonDialogWindow):
@@ -17,4 +18,11 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
 
     def __init__(self, title):
         super(CastControlsDialog, self).__init__(title)
-        self.setGeometry(400, 300, 1, 1)
+        self.setGeometry(400, 300, 3, 3)
+        self.play_pause_button = pyxbmct.RadioButton(
+            label="",
+            focusOnTexture=image("OSDPauseFO.png"),
+            noFocusOnTexture=image("OSDPauseNF.png"),
+            focusOffTexture=image("OSDPlayFO.png"),
+            noFocusOffTexture=image("OSDPlayNF.png"))
+        self.placeControl(self.play_pause_button, 1, 1)
