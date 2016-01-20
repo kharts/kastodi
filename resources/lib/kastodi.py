@@ -54,9 +54,7 @@ def cast_button_pressed():
     index = select_chromecast_dialog.select("Cast to",
                                             chromecasts)
     cast_name = chromecasts[index]
-    progress_dialog.create("Connecting to " + cast_name + "...")
     start_casting(cast_name)
-    progress_dialog.close()
 
 
 def start_casting(chromecast_name):
@@ -67,6 +65,7 @@ def start_casting(chromecast_name):
     :return: None
     """
 
+    progress_dialog.create("Connecting to " + cast_name + "...")
     cast = pychromecast.get_chromecast(friendly_name=chromecast_name)
     if not cast:
         error("Couldn't connect to " + chromecast_name)
@@ -83,6 +82,7 @@ def start_casting(chromecast_name):
         player.pause()
     cast.media_controller.play_media(url,
                                      content_type)
+    progress_dialog.close()
     cast_controls_dialog = CastControlsDialog("Cast Controls Dialog")
     cast_controls_dialog.doModal()
 
