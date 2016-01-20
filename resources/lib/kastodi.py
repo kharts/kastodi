@@ -29,7 +29,7 @@ import pychromecast
 IDLE_TIME = 1 # 1 second
 PLAYER_CONTROLS_ID = 10114 # player controls window ID
 WINDOW_OSD = 12901 # video on screen display window ID
-
+NEED_RESTART = False
 
 def run():
     """
@@ -40,6 +40,12 @@ def run():
     #player = CustomPlayer()
 
     result = add_cast_button()
+
+    if result and NEED_RESTART:
+        question = xbmcgui.Dialog()
+        if question.yesno("Need restart",
+                       "To start casting, you need to restart Kodi. Exit now?"):
+            xbmc.executebuiltin("Quit()")
 
     monitor = xbmc.Monitor()
 
@@ -59,6 +65,7 @@ def add_cast_button():
     :rtype: bool
     """
 
+    global NEED_RESTART
     current_skin_id = xbmc.getSkinDir()
     skin_folder_home = xbmc.translatePath("special://home/addons/" + current_skin_id)
     if not os.path.exists(skin_folder_home):
@@ -77,6 +84,7 @@ def add_cast_button():
                                                                       skin_folder_home)
                 error(message)
                 return False
+            NEED_RESTART = True
     if not copy_icons(skin_folder_home):
         return False
     res_folder = get_default_resolution_folder(skin_folder_home)
@@ -97,7 +105,8 @@ def add_cast_button():
         error("Couldn't write to skin folder")
         log_exception(str(e))
         return False
-    xbmc.executebuiltin("ReloadSkin()")
+    if not NEED_RESTART:
+        xbmc.executebuiltin("ReloadSkin()")
     return True
 
 
