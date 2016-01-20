@@ -8,7 +8,9 @@
         <import addon="script.module.pyxbmct" version="1.1.5"></import>
     </requires>
     <extension point="xbmc.service" library="service.py" start="startup" />
-    <extension point="xbmc.python.pluginsource" library="plugin.py"></extension>
+    <extension point="xbmc.python.pluginsource" library="plugin.py">
+        <provides>executable</provides>
+    </extension>
     <extension point="xbmc.addon.metadata">
         <summary lang="en">Cast from Kodi to Chromecast!</summary>
         <description lang="en">Allows to cast media from Kodi to Chromecast</description>
