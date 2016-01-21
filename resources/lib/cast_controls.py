@@ -9,6 +9,10 @@
 import pyxbmct
 from common import *
 
+WINDOW_WIDTH = 640
+WINDOW_HEIGHT = 480
+NUM_ROWS = 6
+NUM_COLUMNS = 8
 
 class CastControlsDialog(pyxbmct.AddonDialogWindow):
     """
@@ -18,7 +22,7 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
 
     def __init__(self, title, thumb):
         super(CastControlsDialog, self).__init__(title)
-        self.setGeometry(640, 480, 6, 8)
+        self.setGeometry(WINDOW_HEIGHT, WINDOW_HEIGHT, NUM_ROWS, NUM_COLUMNS)
         self.thumb = pyxbmct.Image(thumb)
         self.placeControl(self.thumb,
                           row=0,
