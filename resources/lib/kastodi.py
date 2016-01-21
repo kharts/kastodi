@@ -82,7 +82,10 @@ def start_casting(chromecast_name):
     cast.media_controller.play_media(url,
                                      content_type)
     progress_dialog.close()
-    cast_controls_dialog = CastControlsDialog("Cast Controls Dialog")
+    title = "Casting " + xbmc.getInfoLabel("Player.Title")
+    thumb = xbmc.getInfoLabel("Player.Art(thumb)")
+    cast_controls_dialog = CastControlsDialog(title=title,
+                                              thumb=thumb)
     cast_controls_dialog.doModal()
 
 def start_service():

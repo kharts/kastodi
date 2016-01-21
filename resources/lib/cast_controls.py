@@ -16,11 +16,21 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
     play/pause/stop buttons, seekbar, volume control etc.
     """
 
-    def __init__(self, title):
+    def __init__(self, title, thumb):
         super(CastControlsDialog, self).__init__(title)
-        self.setGeometry(400, 300, 3, 3)
+        self.setGeometry(640, 480, 6, 8)
+        self.thumb = pyxbmct.Image(thumb)
+        self.placeControl(self.thumb,
+                          row=0,
+                          column=0,
+                          rowspan=6,
+                          columnspan=8)
         self.play_pause_background = pyxbmct.Image(filename=image("OSDPauseFO.png"))
-        self.placeControl(self.play_pause_background, 1, 1)
+        self.placeControl(self.play_pause_background,
+                          row=2,
+                          column=3,
+                          rowspan=2,
+                          columnspan=2)
         # self.play_pause_button = pyxbmct.RadioButton(
         #     label="",
         #     focusOnTexture=image("OSDPauseFO.png"),
