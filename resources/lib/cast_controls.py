@@ -29,16 +29,28 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
                           column=0,
                           rowspan=6,
                           columnspan=8)
-        self.play_pause_background = pyxbmct.Image(filename=image("OSDPauseFO.png"))
+        self.play_pause_background = pyxbmct.Image(
+            filename=image("OSDPauseFO.png"))
         self.placeControl(self.play_pause_background,
                           row=2,
                           column=3,
                           rowspan=2,
                           columnspan=2)
-        # self.play_pause_button = pyxbmct.RadioButton(
-        #     label="",
-        #     focusOnTexture=image("OSDPauseFO.png"),
-        #     noFocusOnTexture=image("OSDPauseNF.png"),
-        #     focusOffTexture=image("OSDPlayFO.png"),
-        #     noFocusOffTexture=image("OSDPlayNF.png"))
-        #self.placeControl(self.play_pause_button, 1, 1)
+        self.play_pause_button = pyxbmct.Button(
+            label="",
+            focusTexture="",
+            noFocusTexture="")
+        self.placeControl(self.play_pause_button,
+                          row=2,
+                          column=3,
+                          rowspan=2,
+                          columnspan=2)
+        self.connect(self.play_pause_button, self.play_pause_button_pressed)
+
+    def play_pause_button_pressed(self):
+        """
+        onClick handle of play_pause_button
+        :return:
+        """
+
+        info("Hi!")
