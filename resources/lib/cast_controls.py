@@ -22,8 +22,8 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
 
     def __init__(self, title, thumb):
         super(CastControlsDialog, self).__init__(title)
-        self.setGeometry(WINDOW_HEIGHT, WINDOW_HEIGHT, NUM_ROWS, NUM_COLUMNS)
-        self.thumb = pyxbmct.Image(thumb)
+        self.setGeometry(WINDOW_WIDTH, WINDOW_HEIGHT, NUM_ROWS, NUM_COLUMNS)
+        self.thumb = pyxbmct.Image(thumb, aspectRatio=2)
         self.placeControl(self.thumb,
                           row=0,
                           column=0,
