@@ -18,9 +18,23 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
     """
     Class for implementing Cast controls dialog - window with
     play/pause/stop buttons, seekbar, volume control etc.
+
+    :param title: text for window header
+    :type title: str
+    :param thumb: path to thumbnail of currently playing video.
+        Will be set as background of content part of the window
+    :type thumb: str
     """
 
     def __init__(self, title, thumb):
+        """
+        :param title: text for window header
+        :type title: str
+        :param thumb: path to thumbnail of currently playing video.
+        Will be set as background of content part of the window
+        :type thumb: str
+        """
+
         super(CastControlsDialog, self).__init__(title)
         self.setGeometry(WINDOW_WIDTH, WINDOW_HEIGHT, NUM_ROWS, NUM_COLUMNS)
         self.thumb = pyxbmct.Image(thumb, aspectRatio=2)
