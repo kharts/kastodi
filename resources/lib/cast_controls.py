@@ -80,8 +80,10 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
         :return: None
         """
 
-        self.cast.media_controller.pause()
         self.playing = False
+        if not self.cast.media_controller.is_playing:
+            return
+        self.cast.media_controller.pause()
         self.pause_button.setVisible(False)
         self.play_button.setVisible(True)
         self.setFocus(self.play_button)
@@ -92,8 +94,10 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
         :return: None
         """
 
-        self.cast.media_controller.play()
         self.playing = True
+        if self.cast.media_controller.is_playing:
+            return
+        self.cast.media_controller.play()
         self.play_button.setVisible(False)
         self.pause_button.setVisible(True)
         self.setFocus(self.pause_button)
