@@ -80,6 +80,12 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
                           rowspan=2,
                           columnspan=4)
         self.connect(self.stop_button, self.close)
+        self.volume_icon = pyxbmct.Image(image("VolumeIcon.png"))
+        self.placeControl(self.volume_icon,
+                          row=0,
+                          column=14,
+                          rowspan=1,
+                          columnspan=1)
 
     def pause_button_pressed(self):
         """
