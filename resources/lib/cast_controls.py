@@ -73,6 +73,13 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
                           columnspan=2)
         self.play_button.setVisible(False)
         self.connect(self.play_button, self.play_button_pressed)
+        self.stop_button = pyxbmct.Button(label="Stop casting")
+        self.placeControl(self.stop_button,
+                          row=4,
+                          column=6,
+                          rowspan=1,
+                          columnspan=2)
+        self.connect(self.stop_button, self.close)
 
     def pause_button_pressed(self):
         """
