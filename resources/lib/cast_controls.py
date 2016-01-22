@@ -70,7 +70,6 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
                           columnspan=2)
         self.play_button.setVisible(False)
         self.connect(self.play_button, self.play_button_pressed)
-        # self.connect(self.play_pause_button, self.play_pause_button_pressed)
 
     def pause_button_pressed(self):
         """
@@ -94,53 +93,3 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
         self.pause_button.setVisible(True)
         self.setFocus(self.pause_button)
 
-    def play_pause_button_pressed(self):
-        """
-        onClick handle of play_pause_button
-        :return:
-        """
-
-        self.playing = not self.playing
-        self.set_play_pause_background(self.play_pause_button.getId())
-
-    def set_play_pause_background(self, focused_control_id):
-        """
-        Set background for play_pause_button control
-        :param focused_control_id: id of currently focused control
-        :type focused_control_id: int
-        :return: None
-        """
-
-        if self.playing:
-            if focused_control_id == self.play_pause_button.getId():
-                self.play_pause_background.setImage(image("OSDPauseFO.png"))
-            else:
-                self.play_pause_background.setImage(image("OSDPauseNF.png"))
-        else:
-            if focused_control_id == self.play_pause_button.getId():
-                self.play_pause_background.setImage(image("OSDPlayFO.png"))
-            else:
-                self.play_pause_background.setImage(image("OSDPlayNF.png"))
-
-    # def onFocus(self, controlId):
-    #     """
-    #     onFocus event handler of the window
-    #     :param controlId: id of the currently focused control
-    #     :type controlId: int
-    #     :return: None
-    #     """
-    #
-    #     self.set_play_pause_background(controlId)
-    #
-    # def onAction(self, Action):
-    #     """
-    #     onAction event handler of the window
-    #     :param Action: action performed
-    #     :type Action: xbmcgui.Action
-    #     :return: None
-    #     """
-    #
-    #     if Action == xbmcgui.ACTION_MOUSE_MOVE:
-    #         focusedId = self.getFocusId()
-    #         self.set_play_pause_background(focusedId)
-    #     super(CastControlsDialog, self).onAction(Action)
