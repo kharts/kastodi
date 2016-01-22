@@ -52,8 +52,8 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
         self.playing = True
         self.pause_button = pyxbmct.Button(
             label="",
-            focusTexture=image("OSDPauseFO.png"),
-            noFocusTexture=image("OSDPauseNF.png")
+            focusTexture=image("pauseFO.png"),
+            noFocusTexture=image("pauseNF.png")
         )
         self.placeControl(self.pause_button,
                           row=2,
@@ -63,8 +63,8 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
         self.connect(self.pause_button, self.pause_button_pressed)
         self.play_button = pyxbmct.Button(
             label="",
-            focusTexture=image("OSDPlayFO.png"),
-            noFocusTexture=image("OSDPlayNF.png")
+            focusTexture=image("playFO.png"),
+            noFocusTexture=image("playNF.png")
         )
         self.placeControl(self.play_button,
                           row=2,
