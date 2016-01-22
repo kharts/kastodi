@@ -1,7 +1,7 @@
 <!-- kastodi_start -->
 <control type="button">
 	<description>Cast button</description>
-	<left>50</left>
+	<left>122r</left>
 	<top>50</top>
 	<width>72</width>
 	<height>72</height>
