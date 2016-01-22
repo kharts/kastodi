@@ -90,7 +90,11 @@ def start_casting(chromecast_name):
         thumb=thumb
     )
     cast_controls_dialog.doModal()
-    cast.media_controller.stop()
+    try:
+        cast.media_controller.stop()
+    except Exception, e:
+        log_exception("Couldn't stop casting")
+        log_exception(str(e))
 
 def start_service():
     """
