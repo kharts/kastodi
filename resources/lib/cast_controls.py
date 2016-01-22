@@ -13,8 +13,8 @@ from common import *
 
 WINDOW_WIDTH = 640
 WINDOW_HEIGHT = 480
-NUM_ROWS = 6
-NUM_COLUMNS = 8
+NUM_ROWS = 12
+NUM_COLUMNS = 16
 
 
 class CastControlsDialog(pyxbmct.AddonDialogWindow):
@@ -47,8 +47,8 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
         self.placeControl(self.thumb,
                           row=0,
                           column=0,
-                          rowspan=6,
-                          columnspan=8)
+                          rowspan=12,
+                          columnspan=16)
         self.playing = True
         self.pause_button = pyxbmct.Button(
             label="",
@@ -56,10 +56,10 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
             noFocusTexture=image("pauseNF.png")
         )
         self.placeControl(self.pause_button,
-                          row=2,
-                          column=3,
-                          rowspan=2,
-                          columnspan=2)
+                          row=4,
+                          column=6,
+                          rowspan=4,
+                          columnspan=4)
         self.connect(self.pause_button, self.pause_button_pressed)
         self.play_button = pyxbmct.Button(
             label="",
@@ -67,18 +67,18 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
             noFocusTexture=image("playNF.png")
         )
         self.placeControl(self.play_button,
-                          row=2,
-                          column=3,
-                          rowspan=2,
-                          columnspan=2)
+                          row=4,
+                          column=6,
+                          rowspan=4,
+                          columnspan=4)
         self.play_button.setVisible(False)
         self.connect(self.play_button, self.play_button_pressed)
         self.stop_button = pyxbmct.Button(label="Stop casting")
         self.placeControl(self.stop_button,
-                          row=4,
-                          column=6,
-                          rowspan=1,
-                          columnspan=2)
+                          row=8,
+                          column=12,
+                          rowspan=2,
+                          columnspan=4)
         self.connect(self.stop_button, self.close)
 
     def pause_button_pressed(self):
