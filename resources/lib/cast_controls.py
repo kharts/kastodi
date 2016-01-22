@@ -86,6 +86,13 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
                           column=14,
                           rowspan=1,
                           columnspan=1)
+        self.volume_slider = pyxbmct.Slider()
+        self.placeControl(self.volume_slider,
+                          row=1,
+                          column=13,
+                          rowspan=1,
+                          columnspan=3)
+        self.volume_slider.setPercent(100)
 
     def pause_button_pressed(self):
         """
