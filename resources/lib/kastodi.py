@@ -85,6 +85,7 @@ def start_casting(chromecast_name):
     title = "Casting " + xbmc.getInfoLabel("Player.Title")
     thumb = xbmc.getInfoLabel("Player.Art(thumb)")
     cast_controls_dialog = CastControlsDialog(title=title,
+                                              cast=cast,
                                               thumb=thumb)
     cast_controls_dialog.doModal()
 

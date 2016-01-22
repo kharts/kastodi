@@ -29,16 +29,19 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
     :type thumb: str
     """
 
-    def __init__(self, title, thumb):
+    def __init__(self, title, cast, thumb):
         """
         :param title: text for window header
         :type title: str
+        :param cast: connected cast device
+        :type cast: pychromecast.Chromecast
         :param thumb: path to thumbnail of currently playing video.
         Will be set as background of content part of the window
         :type thumb: str
         """
 
         super(CastControlsDialog, self).__init__(title)
+        self.cast = cast
         self.setGeometry(WINDOW_WIDTH, WINDOW_HEIGHT, NUM_ROWS, NUM_COLUMNS)
         self.thumb = pyxbmct.Image(thumb, aspectRatio=2)
         self.placeControl(self.thumb,
@@ -77,6 +80,7 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
         :return: None
         """
 
+        self.cast.media_controller.pause()
         self.playing = False
         self.pause_button.setVisible(False)
         self.play_button.setVisible(True)
@@ -88,6 +92,7 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
         :return: None
         """
 
+        self.cast.media_controller.play()
         self.playing = True
         self.play_button.setVisible(False)
         self.pause_button.setVisible(True)
