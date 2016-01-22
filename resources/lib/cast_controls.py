@@ -47,23 +47,52 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
                           rowspan=6,
                           columnspan=8)
         self.playing = True
-        self.play_pause_background = pyxbmct.Image(
-            filename=image("OSDPauseNF.png"))
-        self.placeControl(self.play_pause_background,
-                          row=2,
-                          column=3,
-                          rowspan=2,
-                          columnspan=2)
-        self.play_pause_button = pyxbmct.Button(
+        self.pause_button = pyxbmct.Button(
             label="",
-            focusTexture="",
-            noFocusTexture="")
-        self.placeControl(self.play_pause_button,
+            focusTexture=image("OSDPauseFO.png"),
+            noFocusTexture=image("OSDPauseNF.png")
+        )
+        self.placeControl(self.pause_button,
                           row=2,
                           column=3,
                           rowspan=2,
                           columnspan=2)
-        self.connect(self.play_pause_button, self.play_pause_button_pressed)
+        self.connect(self.pause_button, self.pause_button_pressed)
+        self.play_button = pyxbmct.Button(
+            label="",
+            focusTexture=image("OSDPlayFO.png"),
+            noFocusTexture=image("OSDPlayNF.png")
+        )
+        self.placeControl(self.play_button,
+                          row=2,
+                          column=3,
+                          rowspan=2,
+                          columnspan=2)
+        self.play_button.setVisible(False)
+        self.connect(self.play_button, self.play_button_pressed)
+        # self.connect(self.play_pause_button, self.play_pause_button_pressed)
+
+    def pause_button_pressed(self):
+        """
+        pause_button pressing handler
+        :return: None
+        """
+
+        self.playing = False
+        self.pause_button.setVisible(False)
+        self.play_button.setVisible(True)
+        self.setFocus(self.play_button)
+
+    def play_button_pressed(self):
+        """
+        play_button pressing hanlder
+        :return: None
+        """
+
+        self.playing = True
+        self.play_button.setVisible(False)
+        self.pause_button.setVisible(True)
+        self.setFocus(self.pause_button)
 
     def play_pause_button_pressed(self):
         """
@@ -93,25 +122,25 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
             else:
                 self.play_pause_background.setImage(image("OSDPlayNF.png"))
 
-    def onFocus(self, controlId):
-        """
-        onFocus event handler of the window
-        :param controlId: id of the currently focused control
-        :type controlId: int
-        :return: None
-        """
-
-        self.set_play_pause_background(controlId)
-
-    def onAction(self, Action):
-        """
-        onAction event handler of the window
-        :param Action: action performed
-        :type Action: xbmcgui.Action
-        :return: None
-        """
-
-        if Action == xbmcgui.ACTION_MOUSE_MOVE:
-            focusedId = self.getFocusId()
-            self.set_play_pause_background(focusedId)
-        super(CastControlsDialog, self).onAction(Action)
+    # def onFocus(self, controlId):
+    #     """
+    #     onFocus event handler of the window
+    #     :param controlId: id of the currently focused control
+    #     :type controlId: int
+    #     :return: None
+    #     """
+    #
+    #     self.set_play_pause_background(controlId)
+    #
+    # def onAction(self, Action):
+    #     """
+    #     onAction event handler of the window
+    #     :param Action: action performed
+    #     :type Action: xbmcgui.Action
+    #     :return: None
+    #     """
+    #
+    #     if Action == xbmcgui.ACTION_MOUSE_MOVE:
+    #         focusedId = self.getFocusId()
+    #         self.set_play_pause_background(focusedId)
+    #     super(CastControlsDialog, self).onAction(Action)
