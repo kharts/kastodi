@@ -15,7 +15,9 @@ WINDOW_WIDTH = 640
 WINDOW_HEIGHT = 480
 NUM_ROWS = 12
 NUM_COLUMNS = 16
-
+VOLUME_ACTIONS = [xbmcgui.ACTION_MOUSE_WHEEL_DOWN,
+                  xbmcgui.ACTION_MOUSE_WHEEL_UP,
+                  xbmcgui.ACTION_MOUSE_DRAG]
 
 class CastControlsDialog(pyxbmct.AddonDialogWindow):
     """
@@ -92,7 +94,10 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
                           column=13,
                           rowspan=1,
                           columnspan=3)
-        self.volume_slider.setPercent(100)
+        if self.cast.status:
+            self.volume_slider.setPercent(self.cast.status.volume_level * 100)
+        else:
+            self.volume_slider.setPercent(100)
 
     def pause_button_pressed(self):
         """
@@ -121,4 +126,28 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
         self.play_button.setVisible(False)
         self.pause_button.setVisible(True)
         self.setFocus(self.pause_button)
+
+    def set_volume(self):
+        """
+        Set volume respecting to value of volume_slider
+        :return: None
+        """
+
+        volume = self.volume_slider.getPercent() / 100
+        self.cast.set_volume(volume)
+
+    def onAction(self, Action):
+        """
+        onAction event handler
+        :param Action: action type
+        :type Action: xbmcgui.Action
+        :return: None
+        """
+
+        for volume_action in VOLUME_ACTIONS:
+            if Action == volume_action:
+                focused_control = self.getFocus()
+                if focused_control == self.volume_slider:
+                    self.set_volume()
+        super(CastControlsDialog, self).onAction(Action)
 
