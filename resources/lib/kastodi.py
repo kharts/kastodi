@@ -77,6 +77,7 @@ def start_casting(chromecast_name):
     if not content_type:
         content_type = get_content_type(url)
     debug("content_type: " + str(content_type))
+    livetv = xbmc.getCondVisibility("VideoPlayer.Content(livetv)")
     if not xbmc.getCondVisibility("Player.Paused()"):
         player.pause()
     cast.media_controller.play_media(url,
@@ -84,7 +85,8 @@ def start_casting(chromecast_name):
     progress_dialog.close()
     title = "Casting " + xbmc.getInfoLabel("Player.Title")
     thumb = xbmc.getInfoLabel("Player.Art(thumb)")
-    show_seekbar = not xbmc.getCondVisibility("VideoPlayer.Content(LiveTV)")
+    debug("livetv: " + str(livetv))
+    show_seekbar = not livetv
     cast_controls_dialog = CastControlsDialog(
         title=title,
         cast=cast,

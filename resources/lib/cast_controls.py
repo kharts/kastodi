@@ -80,12 +80,7 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
         self.connect(self.play_button, self.play_button_pressed)
         stop_button_shift = 1
         if show_seekbar:
-            self.seekbar = pyxbmct.Slider()
-            self.placeControl(self.seekbar,
-                              row=11,
-                              column=0,
-                              rowspan=1,
-                              columnspan=16)
+            self.add_seekbar()
         self.stop_button = pyxbmct.Button(label="Stop casting")
         self.placeControl(self.stop_button,
                           row=8,
@@ -147,6 +142,29 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
         volume = self.volume_slider.getPercent() / 100
         self.cast.set_volume(volume)
 
+    def add_seekbar(self):
+        """
+        Add seekbar to the dialog window
+        :return:
+        """
+
+        self.seek_slider = pyxbmct.Slider()
+        self.placeControl(self.seek_slider,
+                          row=11,
+                          column=0,
+                          rowspan=1,
+                          columnspan=16)
+        self.seek_slider.setPercent(27)
+        max_width = self.seek_slider.getWidth()
+        self.progress_bar = ProgressBar(filename=image("progress.png"),
+                                        max_width=max_width)
+        self.placeControl(self.progress_bar,
+                          row=11,
+                          column=0,
+                          rowspan=1,
+                          columnspan=16)
+        self.progress_bar.setPercent(27)
+
     def onAction(self, Action):
         """
         onAction event handler
@@ -162,3 +180,45 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
                     self.set_volume()
         super(CastControlsDialog, self).onAction(Action)
 
+
+class ProgressBar(xbmcgui.ControlImage):
+    """
+    Control which displays progress bar.
+    Implements interface of standart xbmcgui.ControlProgress,
+    but it works indeed
+    """
+
+    def __new__(cls, *args, **kwargs):
+        filename = kwargs.get("filename", "")
+        return super(ProgressBar, cls).__new__(cls, -10, -10, 1, 1, filename)
+
+    def __init__(self, filename, max_width):
+        """
+        :param filename: path to image file
+        :type filename: str
+        :param max_width: maximum width of the progress bar
+        :type max_width: int
+        :return: None
+        """
+
+        self.MAX_WIDTH = max_width
+
+    def getPercent(self):
+        """
+        Get a float of the percent of the progress
+        :return: percent of the progress
+        :rtype: float
+        """
+
+        return 100.0 * self.getWidth() / self.MAX_WIDTH
+
+    def setPercent(self, percent):
+        """
+        Set a percentage of the progressbar to show
+        :param percent: percentage to show
+        :type percent: float
+        :return: None
+        """
+
+        width = int(self.MAX_WIDTH * percent / 100.0)
+        self.setWidth(width)
