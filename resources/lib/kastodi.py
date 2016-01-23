@@ -100,6 +100,36 @@ def start_casting(chromecast_name):
         log_exception("Couldn't stop casting")
         log_exception(str(e))
 
+
+def transform_url(url):
+    """
+    Convert url to supported by Chromecast format
+    :param url: original url
+    :type url: str
+    :return: converted url
+    :rtype: str
+    """
+
+    if url[:4] == "http":
+        return url
+    elif url[:4] == "rtmp":
+        error("RTMP videos aren't supported")
+        return None
+    else:
+        return transform_local_url(url)
+
+
+def transform_local_url(url):
+    """
+    Convert local url to url to Kodi web-interface
+    :param url: original url
+    :return:
+    """
+
+    error("Local videos aren't supported")
+    return None
+
+
 def start_service():
     """
     Start service
