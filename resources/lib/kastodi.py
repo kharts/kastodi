@@ -84,10 +84,12 @@ def start_casting(chromecast_name):
     progress_dialog.close()
     title = "Casting " + xbmc.getInfoLabel("Player.Title")
     thumb = xbmc.getInfoLabel("Player.Art(thumb)")
+    show_seekbar = not xbmc.getCondVisibility("VideoPlayer.Content(LiveTV)")
     cast_controls_dialog = CastControlsDialog(
         title=title,
         cast=cast,
-        thumb=thumb
+        thumb=thumb,
+        show_seekbar=show_seekbar
     )
     cast_controls_dialog.doModal()
     try:

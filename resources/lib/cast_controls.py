@@ -31,15 +31,18 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
     :type thumb: str
     """
 
-    def __init__(self, title, cast, thumb):
+    def __init__(self, title, cast, thumb, show_seekbar):
         """
         :param title: text for window header
         :type title: str
         :param cast: connected cast device
         :type cast: pychromecast.Chromecast
         :param thumb: path to thumbnail of currently playing video.
-        Will be set as background of content part of the window
+            Will be set as background of content part of the window
         :type thumb: str
+        :param show_seekbar: show slider for seeking to the given
+            position of the media
+        :type show_seekbar: bool
         """
 
         super(CastControlsDialog, self).__init__(title)
@@ -75,6 +78,14 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
                           columnspan=4)
         self.play_button.setVisible(False)
         self.connect(self.play_button, self.play_button_pressed)
+        stop_button_shift = 1
+        if show_seekbar:
+            self.seekbar = pyxbmct.Slider()
+            self.placeControl(self.seekbar,
+                              row=11,
+                              column=0,
+                              rowspan=1,
+                              columnspan=16)
         self.stop_button = pyxbmct.Button(label="Stop casting")
         self.placeControl(self.stop_button,
                           row=8,
