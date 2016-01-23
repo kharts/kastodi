@@ -123,7 +123,9 @@ def transform_local_url(url):
     """
     Convert local url to url to Kodi web-interface
     :param url: original url
-    :return:
+    :type url: str
+    :return: transformed url to Kodi web-interface
+    :rtype: str
     """
 
     error("Local videos aren't supported")
