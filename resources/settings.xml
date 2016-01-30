@@ -2,6 +2,6 @@
 <settings>
     <category id="general" label="30001">
         <setting id="enable_service" label="30002" type="bool" default="true"></setting>
-        <setting id="tries" label="30003" type="number" default="3"></setting>
+        <setting id="tries" label="30003" type="number" default="5"></setting>
     </category>
 </settings>
