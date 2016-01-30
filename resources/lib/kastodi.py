@@ -32,6 +32,7 @@ import netifaces
 
 IDLE_TIME = 1 # 1 second
 NEED_RESTART = False
+TRIES = int(this_addon.getSetting("tries")) # Number of connection attempts
 
 pychromecast.IGNORE_CEC.append('*')  # Ignore CEC on all devices
 
@@ -44,7 +45,7 @@ def cast_button_pressed():
 
     progress_dialog = xbmcgui.DialogProgress()
     progress_dialog.create("Discovering cast devices...")
-    chromecasts = pychromecast.get_chromecasts_as_dict().keys()
+    chromecasts = pychromecast.get_chromecasts_as_dict(tries=TRIES).keys()
     if progress_dialog.iscanceled():
         progress_dialog.close()
         return
@@ -69,7 +70,8 @@ def start_casting(chromecast_name):
 
     progress_dialog = xbmcgui.DialogProgress()
     progress_dialog.create("Connecting to " + chromecast_name + "...")
-    cast = pychromecast.get_chromecast(friendly_name=chromecast_name)
+    cast = pychromecast.get_chromecast(friendly_name=chromecast_name,
+                                       tries=TRIES)
     if not cast:
         error("Couldn't connect to " + chromecast_name)
         return
