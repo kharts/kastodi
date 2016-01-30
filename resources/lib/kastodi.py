@@ -80,6 +80,7 @@ def start_casting(chromecast_name):
     url = player.getPlayingFile()
     debug("url: " + url)
     url = transform_url(url)
+    debug("transformed url: " + str(url))
     if not url:
         return
     content_type, encoding = mimetypes.guess_type(url)
