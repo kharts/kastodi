@@ -12,6 +12,7 @@ import mimetypes
 import urllib
 import shutil
 from xml.etree import ElementTree as ET
+import json
 import xbmc
 import xbmcgui
 import xbmcaddon
@@ -26,10 +27,13 @@ lib_path = os.path.join(addon_path, "resources", "lib")
 sys.path.insert(0, lib_path)
 debug(sys.path)
 import pychromecast
-
+import zeroconf
+import netifaces
 
 IDLE_TIME = 1 # 1 second
 NEED_RESTART = False
+
+pychromecast.IGNORE_CEC.append('*')  # Ignore CEC on all devices
 
 
 def cast_button_pressed():
@@ -73,6 +77,9 @@ def start_casting(chromecast_name):
     player = xbmc.Player()
     url = player.getPlayingFile()
     debug("url: " + url)
+    url = transform_url(url)
+    if not url:
+        return
     content_type, encoding = mimetypes.guess_type(url)
     if not content_type:
         content_type = get_content_type(url)
@@ -107,7 +114,7 @@ def transform_url(url):
     :param url: original url
     :type url: str
     :return: converted url
-    :rtype: str
+    :rtype: str or None (if url is't supported by Chromecast)
     """
 
     if url[:4] == "http":
@@ -121,14 +128,85 @@ def transform_url(url):
 
 def transform_local_url(url):
     """
-    Convert local url to url to Kodi web-interface
+    Convert local url to url to Kodi web-interface:
+    http://<your ip>:<configured port>/vfs/<url encoded vfs path>
     :param url: original url
     :type url: str
     :return: transformed url to Kodi web-interface
     :rtype: str
     """
 
-    error("Local videos aren't supported")
+    if not get_setting("services.webserver"):
+        dialogok = xbmcgui.Dialog()
+        dialogok.ok("Kastodi",
+                    "For casting local videos, please turn on Web server "
+                    "(System - Settings - Services - Web server - "
+                    "Allow remote control via HTTP).")
+        return None
+
+    local_ip = get_local_ip()
+    if local_ip:
+        webserver_port = get_setting("services.webserverport")
+        encoded_url = urllib.quote(url)
+        new_url = "http://{0}:{1}/vfs/{2}".format(local_ip,
+                                                  webserver_port,
+                                                  encoded_url)
+        return new_url
+    else:
+        error("Couldn't obtain local ip address")
+        return None
+
+
+def get_setting(name):
+    """
+    Get Kodi setting
+    :param name: id of the setting.
+        Example:
+    :type name: str
+    :return: string value of the setting
+    :rtype: str
+    """
+
+    command = '{"jsonrpc":"2.0", "id":1, ' \
+              '"method":"Settings.GetSettingValue",' \
+              '"params":{"setting":"' + name + '"}}'
+    try:
+        response = xbmc.executeJSONRPC(command)
+    except Exception, e:
+        log_exception("Couldn't execute JSON-RPC")
+        debug(command)
+        log_exception(str(e))
+        return
+    try:
+        data = json.loads(response)
+    except Exception, e:
+        log_exception("Couldn't parse JSON response")
+        debug(response)
+        log_exception(str(e))
+        return None
+
+    debug("data: " + str(data))
+    result = data.get("result")
+    if result:
+        return result.get("value")
+    else:
+        return None
+
+
+def get_local_ip():
+    """
+    Get local ip address of the localhost.
+    Example: "10.0.0.2"
+    :return: local ip address
+    :rtype: str
+    """
+
+    ranges = ["10.", "172.", "192."]
+    all_addresses = zeroconf.get_all_addresses(netifaces.AF_INET)
+    for address in all_addresses:
+        for ran in ranges:
+            if address.startswith(ran):
+                return address
     return None
 
 
