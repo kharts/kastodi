@@ -140,12 +140,16 @@ def transform_local_url(url):
     """
 
     if not get_setting("services.webserver"):
-        dialogok = xbmcgui.Dialog()
-        dialogok.ok("Kastodi",
-                    "For casting local videos, please turn on Web server "
-                    "(System - Settings - Services - Web server - "
-                    "Allow remote control via HTTP).")
-        return None
+        question = xbmcgui.Dialog()
+        if question.yesno(
+                "Kastodi",
+                "Casting local videos requires enabling Web server.",
+                "Would you like to turn on Web server now?"
+        ):
+            if not set_setting_value("services.webserver", True):
+                return None
+        else:
+            return None
 
     local_ip = get_local_ip()
     if local_ip:
@@ -194,6 +198,31 @@ def get_setting(name):
         return result.get("value")
     else:
         return None
+
+
+def set_setting_value(name, value):
+    """
+    Set Kodi settings value
+    :param name: of the setting. Example: "services.webserver"
+    :type name: str
+    :param value: value of the setting. Example: True
+    :return: True - if setting was changed successfully; False - otherwise.
+    :rtype: bool
+    """
+
+    str_value = json.dumps(value)
+    command = '{"jsonrpc":"2.0", "id":1, ' \
+              '"method":"Settings.SetSettingValue",' \
+              '"params":{"setting":"' + name + '",' \
+              '"value":' + str_value + '}}'
+    try:
+        xbmc.executeJSONRPC(command)
+    except Exception, e:
+        log_exception("Couldn't change setting")
+        debug(command)
+        log_exception(str(e))
+        return False
+    return True
 
 
 def get_local_ip():
