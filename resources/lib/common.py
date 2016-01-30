@@ -12,6 +12,7 @@ import os
 
 this_addon = xbmcaddon.Addon()
 addonID = this_addon.getAddonInfo("id")
+addonFolder = this_addon.getAddonInfo("path")
 
 
 def error(message):
@@ -39,7 +40,7 @@ def notify(message):
     :param: message: str - message
     :return: None
     """
-    icon = ""  # os.path.join(addonFolder, "icon.png")
+    icon = os.path.join(addonFolder, "icon.png")
     xbmc.executebuiltin(unicode('XBMC.Notification(' + message + ',3000,' + icon + ')').encode("utf-8"))
 
 
