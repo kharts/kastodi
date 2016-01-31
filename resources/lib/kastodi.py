@@ -87,18 +87,26 @@ def start_casting(chromecast_name):
     if not content_type:
         content_type = get_content_type(url)
     debug("content_type: " + str(content_type))
+    title = xbmc.getInfoLabel("Player.Title")
+    thumb = xbmc.getInfoLabel("Player.Art(thumb)")
+    thumb_url = transform_local_url(thumb, show_warnings=False)
+    debug("thumb_url: " + str(thumb_url))
+    metadata = {'metadataType': 0,
+                'title': title,
+                'images': [{'url': thumb_url}]}
     livetv = xbmc.getCondVisibility("VideoPlayer.Content(livetv)")
     if not xbmc.getCondVisibility("Player.Paused()"):
         player.pause()
     cast.media_controller.play_media(url,
-                                     content_type)
+                                     content_type,
+                                     metadata=metadata)
     progress_dialog.close()
-    title = "Casting " + xbmc.getInfoLabel("Player.Title")
-    thumb = xbmc.getInfoLabel("Player.Art(thumb)")
+    window_title = "Casting " + title
+
     debug("livetv: " + str(livetv))
     show_seekbar = not livetv
     cast_controls_dialog = CastControlsDialog(
-        title=title,
+        title=window_title,
         cast=cast,
         thumb=thumb,
         show_seekbar=show_seekbar
@@ -129,24 +137,30 @@ def transform_url(url):
         return transform_local_url(url)
 
 
-def transform_local_url(url):
+def transform_local_url(url, show_warnings=True):
     """
     Convert local url to url to Kodi web-interface:
     http://<your ip>:<configured port>/vfs/<url encoded vfs path>
     :param url: original url
     :type url: str
+    :param show_warnings: in case of any issues (web server isn't enabled,
+        couldn't obtain local ip address
+    :type show_warnings: bool
     :return: transformed url to Kodi web-interface
     :rtype: str
     """
 
     if not get_setting("services.webserver"):
-        question = xbmcgui.Dialog()
-        if question.yesno(
-                "Kastodi",
-                "Casting local videos requires enabling Web server.",
-                "Would you like to turn on Web server now?"
-        ):
-            if not set_setting_value("services.webserver", True):
+        if show_warnings:
+            question = xbmcgui.Dialog()
+            if question.yesno(
+                    "Kastodi",
+                    "Casting local videos requires enabling Web server.",
+                    "Would you like to turn on Web server now?"
+                ):
+                if not set_setting_value("services.webserver", True):
+                    return None
+            else:
                 return None
         else:
             return None
@@ -160,7 +174,8 @@ def transform_local_url(url):
                                                   encoded_url)
         return new_url
     else:
-        error("Couldn't obtain local ip address")
+        if show_warnings:
+            error("Couldn't obtain local ip address")
         return None
 
 
