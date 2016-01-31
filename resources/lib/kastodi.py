@@ -263,6 +263,10 @@ def start_service():
     :return: None
     """
 
+    enable_service = this_addon.getSetting("enable_service")
+    if enable_service != "true":
+        return
+
     result = add_cast_button()
 
     if result and NEED_RESTART:
