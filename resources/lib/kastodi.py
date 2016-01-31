@@ -415,14 +415,18 @@ def get_default_resolution_folder(skin_folder):
         log_exception(str(e))
         return None
     root = tree.getroot()
+    aspect_ratio = xbmc.getInfoLabel("Skin.AspectRatio()")
+    default = None
     for child in root:
         if child.tag == "extension":
             if child.attrib.get("point", "") == "xbmc.gui.skin":
                 for child2 in child:
                     if child2.tag == "res":
-                        if child2.attrib.get("default", "") == "true":
+                        if child2.attrib.get("aspect","") == aspect_ratio:
                             return child2.attrib.get("folder", None)
-    return None
+                        if child2.attrib.get("default", "") == "true":
+                            default = child2.attrib.get("folder", None)
+    return default
 
 
 def get_cast_button_text():
