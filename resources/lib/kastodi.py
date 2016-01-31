@@ -402,7 +402,3 @@ def get_content_type(url):
         log_exception(str(e))
         return None
     return response.info().type
-
-
-if __name__ == "__main__":
-    run()
