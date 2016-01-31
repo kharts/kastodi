@@ -33,6 +33,8 @@ import netifaces
 IDLE_TIME = 1 # 1 second
 NEED_RESTART = False
 TRIES = int(this_addon.getSetting("tries")) # Number of connection attempts
+CAST_BUTTON_START_TEXT = "<!-- kastodi_start -->"
+CAST_BUTTON_END_TEXT = "<!-- kastodi_end -->"
 
 pychromecast.IGNORE_CEC.append('*')  # Ignore CEC on all devices
 
@@ -282,6 +284,8 @@ def start_service():
             # Abort was requested while waiting. We should exit
             break
 
+    delete_cast_icon()
+
 
 def add_cast_button():
     """
@@ -317,9 +321,14 @@ def add_cast_button():
         error("Couldn't get default resolution folder for skin " + current_skin_id)
         return False
     videoosdxml_path = os.path.join(skin_folder_home, res_folder, "VideoOSD.xml")
-    with open(videoosdxml_path, "rb") as videoosdxml:
-        old_text = videoosdxml.read()
-    if old_text.find("<!-- kastodi_start -->") >= 0:
+    try:
+        with open(videoosdxml_path, "rb") as videoosdxml:
+            old_text = videoosdxml.read()
+    except Exception, e:
+        log_exception("Couldn't get text of VideoOSD.xml")
+        log_exception(str(e))
+        return
+    if old_text.find(CAST_BUTTON_START_TEXT) >= 0:
         NEED_RESTART = False
         return True
     cast_button_text = get_cast_button_text()
@@ -334,6 +343,39 @@ def add_cast_button():
     if not NEED_RESTART:
         xbmc.executebuiltin("ReloadSkin()")
     return True
+
+
+def delete_cast_icon():
+    """
+    Delete Cast icon from current skin
+    :return: None
+    """
+
+    current_skin_id = xbmc.getSkinDir()
+    skin_folder = xbmc.translatePath("special://home/addons/" + current_skin_id)
+    res_folder = get_default_resolution_folder(skin_folder)
+    if not res_folder:
+        log_exception("Couldn't get default resolution folder for skin " + current_skin_id)
+        return
+    videoosdxml_path = os.path.join(skin_folder, res_folder, "VideoOSD.xml")
+    with open(videoosdxml_path, "rb") as videoosdxml:
+        old_text = videoosdxml.read()
+    start_pos = old_text.find(CAST_BUTTON_START_TEXT)
+    if start_pos == -1:
+        log_exception("Couldn't find cast button")
+        return
+    end_pos = old_text.find(CAST_BUTTON_END_TEXT)
+    if end_pos == -1:
+        log_exception("Couldn't find end of cast button")
+        return
+    len_end_text = len(CAST_BUTTON_END_TEXT)
+    new_text = old_text[:start_pos] + old_text[end_pos + len_end_text:]
+    try:
+        with open(videoosdxml_path, "wb") as videoosdxml:
+            videoosdxml.write(new_text)
+    except Exception, e:
+        log_exception("Couldn't write to skin VideoOSD.xml")
+        log_exception(str(e))
 
 
 def copy_icons(skin_folder):
