@@ -91,7 +91,7 @@ def start_casting(chromecast_name):
     debug("content_type: " + str(content_type))
     title = xbmc.getInfoLabel("Player.Title")
     thumb = xbmc.getInfoLabel("Player.Art(thumb)")
-    thumb_url = transform_local_url(thumb, show_warnings=False)
+    thumb_url = transform_url(thumb, show_warnings=False)
     debug("thumb_url: " + str(thumb_url))
     metadata = {'metadataType': 0,
                 'title': title,
@@ -121,11 +121,14 @@ def start_casting(chromecast_name):
         log_exception(str(e))
 
 
-def transform_url(url):
+def transform_url(url, show_warnings=True):
     """
     Convert url to supported by Chromecast format
     :param url: original url
     :type url: str
+    :param show_warnings: if set True, if url isn't transformed
+        error messages and warnings will be shown
+    :param show_warnings: bool
     :return: converted url
     :rtype: str or None (if url is't supported by Chromecast)
     """
@@ -133,10 +136,11 @@ def transform_url(url):
     if url[:4] == "http":
         return url
     elif url[:4] == "rtmp":
-        error("RTMP videos aren't supported")
+        if show_warnings:
+            error("RTMP videos aren't supported")
         return None
     else:
-        return transform_local_url(url)
+        return transform_local_url(url, show_warnings)
 
 
 def transform_local_url(url, show_warnings=True):
