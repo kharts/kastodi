@@ -89,7 +89,7 @@ def start_casting(chromecast_name):
     if not content_type:
         content_type = get_content_type(url)
     debug("content_type: " + str(content_type))
-    title = xbmc.getInfoLabel("Player.Title")
+    title = get_playing_title() #xbmc.getInfoLabel("Player.Title")
     thumb = xbmc.getInfoLabel("Player.Art(thumb)")
     thumb_url = transform_url(thumb, show_warnings=False)
     debug("thumb_url: " + str(thumb_url))
@@ -473,3 +473,13 @@ def get_current_player_time():
     num_seconds += int(time_tuple[1]) * 60
     num_seconds += int(time_tuple[2])
     return num_seconds
+
+def get_playing_title():
+    """
+    Get title of currently playing media
+    :return: title of media, example: "My Awesome Video"
+    :rtype: str
+    """
+
+    title = xbmc.getInfoLabel("Player.Title")
+    return unicode(title, encoding="utf-8")
