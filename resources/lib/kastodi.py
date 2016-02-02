@@ -99,8 +99,11 @@ def start_casting(chromecast_name):
     livetv = xbmc.getCondVisibility("VideoPlayer.Content(livetv)")
     if not xbmc.getCondVisibility("Player.Paused()"):
         player.pause()
+    current_time = get_current_player_time()
+    debug("current_time: " + str(current_time))
     cast.media_controller.play_media(url,
                                      content_type,
+                                     current_time=current_time,
                                      metadata=metadata)
     progress_dialog.close()
     window_title = "Casting " + title
@@ -456,3 +459,17 @@ def get_content_type(url):
         log_exception(str(e))
         return None
     return response.info().type
+
+
+def get_current_player_time():
+    """
+    Get elapsed time (in seconds) of current playing media
+    :return: number of seconds
+    :type: int
+    """
+
+    time_tuple = xbmc.getInfoLabel("Player.Time(hh:mm:ss)").split(":")
+    num_seconds = int(time_tuple[0]) * 3600
+    num_seconds += int(time_tuple[1]) * 60
+    num_seconds += int(time_tuple[2])
+    return num_seconds
