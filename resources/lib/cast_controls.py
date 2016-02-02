@@ -31,7 +31,7 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
     :type thumb: str
     """
 
-    def __init__(self, title, cast, thumb, show_seekbar):
+    def __init__(self, title, cast, thumb, show_seekbar, percentage=0):
         """
         :param title: text for window header
         :type title: str
@@ -43,6 +43,8 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
         :param show_seekbar: show slider for seeking to the given
             position of the media
         :type show_seekbar: bool
+        :param percentage: % of already played media
+        :type percentage: float
         """
 
         super(CastControlsDialog, self).__init__(title)
@@ -80,7 +82,7 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
         self.connect(self.play_button, self.play_button_pressed)
         stop_button_shift = 1
         if show_seekbar:
-            self.add_seekbar()
+            self.add_seekbar(percentage)
         self.stop_button = pyxbmct.Button(label="Stop casting")
         self.placeControl(self.stop_button,
                           row=8,
@@ -142,10 +144,12 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
         volume = self.volume_slider.getPercent() / 100
         self.cast.set_volume(volume)
 
-    def add_seekbar(self):
+    def add_seekbar(self, percentage):
         """
         Add seekbar to the dialog window
-        :return:
+        :param percentage: number of % of already played media
+        :type percentage: float
+        :return: None
         """
 
         self.seek_slider = pyxbmct.Slider()
@@ -154,7 +158,6 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
                           column=0,
                           rowspan=1,
                           columnspan=16)
-        self.seek_slider.setPercent(27)
         max_width = self.seek_slider.getWidth()
         self.progress_bar = ProgressBar(filename=image("progress.png"),
                                         max_width=max_width)
@@ -163,7 +166,19 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
                           column=0,
                           rowspan=1,
                           columnspan=16)
-        self.progress_bar.setPercent(27)
+        self.set_percentage(percentage)
+
+    def set_percentage(self, percentage):
+        """
+        Set percentage of seek_slider and progress_bar
+        :param percentage: number of % of already played media
+        :type percentage: float
+        :return: None
+        """
+
+        debug("percentage: " + str(percentage))
+        self.seek_slider.setPercent(percentage)
+        self.progress_bar.setPercent(percentage)
 
     def onAction(self, Action):
         """

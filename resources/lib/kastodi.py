@@ -99,7 +99,7 @@ def start_casting(chromecast_name):
     livetv = xbmc.getCondVisibility("VideoPlayer.Content(livetv)")
     if not xbmc.getCondVisibility("Player.Paused()"):
         player.pause()
-    current_time = get_current_player_time()
+    current_time = parse_time(xbmc.getInfoLabel("Player.Time(hh:mm:ss)"))
     debug("current_time: " + str(current_time))
     cast.media_controller.play_media(url,
                                      content_type,
@@ -110,11 +110,18 @@ def start_casting(chromecast_name):
 
     debug("livetv: " + str(livetv))
     show_seekbar = not livetv
+    total_time = parse_time(xbmc.getInfoLabel("Player.Duration(hh:mm:ss)"))
+    debug("total_time: " + str(total_time))
+    if total_time:
+        percentage = current_time / total_time * 100
+    else:
+        percentage = 0
     cast_controls_dialog = CastControlsDialog(
         title=window_title,
         cast=cast,
         thumb=thumb,
-        show_seekbar=show_seekbar
+        show_seekbar=show_seekbar,
+        percentage=percentage
     )
     cast_controls_dialog.doModal()
     try:
@@ -461,17 +468,19 @@ def get_content_type(url):
     return response.info().type
 
 
-def get_current_player_time():
+def parse_time(hhmmss):
     """
-    Get elapsed time (in seconds) of current playing media
+    Convert time from string hh:mm:ss to number of seconds
+    :param hhmmss: string representation of time. Example: "01:15:43"
+    :param hhmmss: str
     :return: number of seconds
-    :type: int
+    :type: float
     """
 
-    time_tuple = xbmc.getInfoLabel("Player.Time(hh:mm:ss)").split(":")
-    num_seconds = int(time_tuple[0]) * 3600
-    num_seconds += int(time_tuple[1]) * 60
-    num_seconds += int(time_tuple[2])
+    time_tuple = hhmmss.split(":")
+    num_seconds = float(time_tuple[0]) * 3600
+    num_seconds += float(time_tuple[1]) * 60
+    num_seconds += float(time_tuple[2])
     return num_seconds
 
 def get_playing_title():
