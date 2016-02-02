@@ -80,12 +80,11 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
                           columnspan=4)
         self.play_button.setVisible(False)
         self.connect(self.play_button, self.play_button_pressed)
-        stop_button_shift = 1
         if show_seekbar:
             self.add_seekbar(percentage)
         self.stop_button = pyxbmct.Button(label="Stop casting")
         self.placeControl(self.stop_button,
-                          row=8,
+                          row=9,
                           column=12,
                           rowspan=2,
                           columnspan=4)
