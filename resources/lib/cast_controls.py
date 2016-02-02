@@ -179,6 +179,22 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
         self.seek_slider.setPercent(percentage)
         self.progress_bar.setPercent(percentage)
 
+    def update_percentage(self):
+        """
+        Update percentage of seekbar (seek_slider and progress_bar)
+        :return: None
+        """
+
+        self.cast.media_controller.update_status(blocking=True)
+        if self.cast.media_controller.status.duration:
+            current_time = self.cast.media_controller.status.current_time
+            total_time = self.cast.media_controller.status.duration
+            percentage = current_time / total_time * 100
+        else:
+            percentage = 0
+        debug("percentage: " + str(percentage))
+        self.set_percentage(percentage)
+
     def onAction(self, Action):
         """
         onAction event handler
@@ -187,11 +203,13 @@ class CastControlsDialog(pyxbmct.AddonDialogWindow):
         :return: None
         """
 
+        debug("Action: " + str(Action.getId()))
         for volume_action in VOLUME_ACTIONS:
             if Action == volume_action:
                 focused_control = self.getFocus()
                 if focused_control == self.volume_slider:
                     self.set_volume()
+        self.update_percentage()
         super(CastControlsDialog, self).onAction(Action)
 
 
